@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { shipmentsApi, Shipment } from './shipmentsApi';
+import { shipmentsApi } from './shipmentsApi';
+import type { Shipment } from './shipmentsApi';
 import { useAuth } from '../auth/AuthContext';
 import { useNotification } from '../core/notifications';
 import { extraerMensajeError } from '../core/errors';
@@ -27,7 +28,7 @@ export const ShipmentsPage: React.FC = () => {
     };
 
     useEffect(() => {
-        cargarEnvios();
+        void cargarEnvios();
     }, [filtroEstado]);
 
     return (

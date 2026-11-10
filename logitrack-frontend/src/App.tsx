@@ -6,6 +6,10 @@ import { LoginPage } from './auth/LoginPage';
 import { RegisterPage } from './auth/RegisterPage';
 import { RequireAuth } from './auth/RequireAuth';
 import { NavBar } from './core/NavBar';
+import { ShipmentsPage } from './shipments/ShipmentsPage';
+import { NewShipmentPage } from './shipments/NewShipmentPage';
+import { ShipmentDetailPage } from './shipments/ShipmentDetailPage';
+import { CouriersPage } from './couriers/CouriersPage';
 
 const SinPermisoPage: React.FC = () => (
     <div style={{ textAlign: 'center', marginTop: '50px' }}>
@@ -26,12 +30,35 @@ export const App: React.FC = () => {
                         <Route path="/register" element={<RegisterPage />} />
                         <Route path="/sin-permiso" element={<SinPermisoPage />} />
 
-                        {/* Próximamente se activan aquí las rutas de /shipments y /couriers */}
                         <Route
                             path="/shipments"
                             element={
                                 <RequireAuth>
-                                    <div style={{ padding: '20px' }}><h2>Sección de Envíos (En desarrollo S4-05)</h2></div>
+                                    <ShipmentsPage />
+                                </RequireAuth>
+                            }
+                        />
+                        <Route
+                            path="/shipments/nuevo"
+                            element={
+                                <RequireAuth rolesPermitidos={['CLIENTE']}>
+                                    <NewShipmentPage />
+                                </RequireAuth>
+                            }
+                        />
+                        <Route
+                            path="/shipments/:id"
+                            element={
+                                <RequireAuth>
+                                    <ShipmentDetailPage />
+                                </RequireAuth>
+                            }
+                        />
+                        <Route
+                            path="/couriers"
+                            element={
+                                <RequireAuth rolesPermitidos={['ADMIN', 'REPARTIDOR']}>
+                                    <CouriersPage />
                                 </RequireAuth>
                             }
                         />
