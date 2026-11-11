@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [develop, main, 'feature/**']
+  pull_request:
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: logitrack-frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: logitrack-frontend/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci --no-audit --no-fund
+
+      - name: Compilar la SPA
+        run: npm run build
+
+      - name: Construir la imagen Docker
+        run: docker build -t logitrack-frontend:ci .
+
+      - name: Revisar la configuración de Nginx
+        run: docker run --rm -e GATEWAY_URL=http://127.0.0.1:8066 logitrack-frontend:ci nginx -t
+
+      - name: Probar el contenedor
+        run: |
+          docker run -d --name frontend-ci -p 8080:80 -e GATEWAY_URL=http://127.0.0.1:8066 logitrack-frontend:ci
+          for i in $(seq 1 20); do curl -fsS http://localhost:8080/salud && break; sleep 1; done
+          curl -fsS http://localhost:8080/envios | grep -q '<div id="root">'
+          docker rm -f frontend-ci

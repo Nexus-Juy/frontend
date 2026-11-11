@@ -1,0 +1,36 @@
+# Nginx de logitrack-frontend.
+# - Sirve la SPA y, para cualquier ruta que no sea un archivo, devuelve index.html (rutas de React Router).
+# - Reenvía /api/... al api-gateway sin cambiar el path. El navegador le habla siempre al mismo origen,
+#   así que no necesita CORS.
+# ${GATEWAY_URL} lo reemplaza la imagen oficial de Nginx al arrancar (por defecto http://api-gateway:8066).
+server {
+    listen 80;
+    server_name _;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location /api/ {
+        proxy_pass ${GATEWAY_URL};
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 30s;
+    }
+
+    location /assets/ {
+        add_header Cache-Control "public, max-age=604800, immutable";
+        try_files $uri =404;
+    }
+
+    location = /salud {
+        access_log off;
+        default_type text/plain;
+        return 200 "UP";
+    }
+
+    location / {
+        add_header Cache-Control "no-cache";
+        try_files $uri $uri/ /index.html;
+    }
+}

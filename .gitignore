@@ -1,11 +1,3 @@
-# Secretos locales: nunca se suben
-.env
-
-# IDEs y sistema operativo
 .idea/
 *.iml
-.vscode/
 .DS_Store
-Thumbs.db
-.git
-
