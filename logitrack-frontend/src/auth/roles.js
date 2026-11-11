@@ -12,6 +12,6 @@ export const PERMISOS = {
   cancelarEnvio: [ADMIN, CLIENTE],
   asignarRepartidor: [ADMIN, CLIENTE],
   cambiarEstadoEnvio: [ADMIN, REPARTIDOR],
-  verRepartidores: [ADMIN, CLIENTE, REPARTIDOR],
+  verRepartidores: [ADMIN, REPARTIDOR],
   gestionarRepartidores: [ADMIN],
 };
