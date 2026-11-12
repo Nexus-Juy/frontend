@@ -24,7 +24,7 @@ SPA (React + Vite) que usa todas las funciones de LogiTrack **solo a través del
 | Ver envíos | Todos | Los suyos | Los asignados (hoja de ruta) |
 | Crear, cancelar y asignar repartidor | Sí | Sí | No |
 | Cambiar estado (En ruta, Entregado) | Sí | No | Sí |
-| Ver repartidores y su disponibilidad | Sí | Sí | Sí |
+| Pantalla de repartidores y su disponibilidad | Sí | No (su interfaz es solo de envíos) | Sí |
 | Crear, editar y activar/desactivar repartidores | Sí | No | No |
 
 Ocultar botones es solo para la pantalla: la seguridad real la aplican el gateway y los servicios.
